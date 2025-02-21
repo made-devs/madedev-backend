@@ -9,20 +9,44 @@ import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
+const mongoURI = process.env.MONGO_URI;
+
+if (!mongoURI) {
+  console.error(
+    '❌ MongoDB URI is missing! Set MONGO_URI in Railway Variables.'
+  );
+  process.exit(1); // Hentikan server jika tidak ada URI
+}
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://madedev-frontend.vercel.app', // Ganti dengan domain frontend Vercel kamu
+  'https://madedev.id',
+];
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: 'http://localhost:3000', // Sesuaikan dengan URL frontend
-    credentials: true, // Izinkan cookie atau auth token
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
   })
 );
 
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
-  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
+  .catch((err) => {
+    console.error('❌ MongoDB Connection Error:', err);
+    process.exit(1);
+  });
 
 app.use('/api/posts', postRoutes);
 app.use('/api/portfolio', portfolioRoutes);
