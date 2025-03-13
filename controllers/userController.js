@@ -58,6 +58,8 @@ export const login = async (req, res) => {
       sameSite: 'None',
     });
 
+    console.log('✅ Cookie set successfully:', req.cookies);
+
     res.status(200).json({ message: 'Login successful' });
   } catch (error) {
     res.status(500).json({ error: 'Login failed' });
