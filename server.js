@@ -45,6 +45,7 @@ mongoose
 app.use('/api/posts', postRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/auth', userRoutes);
+router.get('/me', authMiddleware, getMe);
 
 app.get('/', (req, res) => {
   res.send('Backend is running!');
