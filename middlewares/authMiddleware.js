@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 
 const authMiddleware = (req, res, next) => {
+  console.log('🔍 Checking Authentication...'); // Debugging
+  console.log('🔍 Cookies:', req.cookies); // Cek apakah token ada di cookies
   const token = req.cookies.token;
 
   if (!token) {
