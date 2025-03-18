@@ -21,7 +21,7 @@ if (!mongoURI) {
 const allowedOrigins = [
   'http://localhost:3000',
   'https://madedev-frontend.vercel.app', // Ganti dengan domain frontend Vercel kamu
-  'https://madedev.id',
+  'https://www.madedev.id',
 ];
 
 const app = express();
